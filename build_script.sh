@@ -12,5 +12,5 @@ cp ../lib/inc/dht11lib.h ../lib/src/dht11lib.c ../arduino/dht11
 
 # Compile sketch
 curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-arduino-cli core install arduino:avr
-arduino-cli compile -b arduino:avr:uno ../arduino/dht11
+./bin/arduino-cli core install arduino:avr
+./bin/arduino-cli compile -b arduino:avr:uno ../arduino/dht11
