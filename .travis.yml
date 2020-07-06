@@ -1,6 +1,6 @@
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y install cmake ninja-build ruby curl python3
+  - sudo apt-get -y install cmake ninja-build ruby curl
 compiler:
   - gcc
-script: build_script.sh
+script: ./build_script.sh
