@@ -22,10 +22,36 @@ extern "C" {
 
 // Error codes
 #define DHT11_SUCCESS 0
-#define DHT11_CRC_ERROR (1 << 0)
+#define DHT11_CHECKSUM_ERROR (1 << 0)
 #define DHT11_MISSED_EDGE (1 << 1)
 #define DHT11_TIMEOUT (1 << 2)
 #define DHT11_BAD_PARAMETER (1 << 3)
+
+// Checksum does not catch the case where the line is constantly driven low,
+// catch this here
+#define DHT11_ALL_LOW (1 << 4)
+
+// If OUTPUT, LOW, HIGH and INPUT_PULLUP are not defined as constants,
+// require them to be provided as extern const ints
+#ifndef OUTPUT
+extern const int OUTPUT;
+#endif
+
+#ifndef LOW
+extern const int LOW;
+#endif
+
+#ifndef HIGH
+extern const int HIGH;
+#endif
+
+#ifndef INPUT
+extern const int INPUT;
+#endif
+
+#ifndef INPUT_PULLUP
+extern const int INPUT_PULLUP;
+#endif
 
 /**
  * Performs a blocking read of the DHT11

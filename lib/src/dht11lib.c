@@ -1,5 +1,10 @@
-#include <Arduino.h>
 #include "dht11lib.h"
+
+extern unsigned long micros(void);
+extern int digitalRead(int pin);
+extern void pinMode(int pin, int mode);
+extern void digitalWrite(int pin, int value);
+extern void delay(int duration);
 
 /**
  * Converts 2 bytes to a signed 16-bit integer
@@ -21,7 +26,7 @@ static int pollWithTimeout(int dht11Pin, int awaitedValue, unsigned long timeout
     // This will work even if micros() rolls over due to overflow/underflow semantics
     unsigned long tElapsed = micros() - tStart;
     if (tElapsed > timeout) {
-      return;
+      return DHT11_TIMEOUT;
     }
   }
 
@@ -81,15 +86,21 @@ int Dht11_ReadBlocking(int dht11Pin, int16_t *humidityEncoded, int16_t *temperat
     }
   }
 
+  // Catch edge case not accounted for by checksum: all entries low
+  if ((data[0] == 0) && (data[1] == 0) && (data[2] == 0) && (data[3] == 0) && (data[4] == 0))
+  {
+    return DHT11_ALL_LOW;
+  }
+
   // Populate result and return true if the checksum matches,
   // otherwise return false and leave the result alone
   // Checksum is the last byte of the sum of the data
-  if (data[4] == (data[0] + data[1] + data[2] + data[3])) {
+  if (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xff)) {
     *humidityEncoded = twoBytesToSignedInt16(data[0], data[1]);
     *temperatureEncoded = twoBytesToSignedInt16(data[2], data[3]);
     return DHT11_SUCCESS;
   } else {
-    return DHT11_CRC_ERROR;
+    return DHT11_CHECKSUM_ERROR;
   }
 }
 

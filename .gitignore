@@ -1,0 +1,3 @@
+build
+arduino/*
+!arduino/dht11/dht11.ino
