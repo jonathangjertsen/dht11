@@ -4,7 +4,15 @@
 
 ## Arduino sketch
 
-To use the sketch, open `Arduino/dht11/dht11.ino` and go to `Sketch --> Add File`, then add `lib/inc/dht11.h` and `lib/src/dht11.c`
+To use the sketch, open `Arduino/dht11/dht11.ino` and go to `Sketch --> Add File`, then add `lib/inc/dht11.h`, `lib/src/dht11.c`, and `lib/src/dht11_arduino_constants.c`.
+
+Alternatively with the command line:
+
+```
+cp lib/inc/*.h lib/src/*.c arduino/dht11
+```
+
+This should let Arduino IDE discover the files. 
 
 ## Standalone library
 
